@@ -10,4 +10,5 @@ public interface Graph {
 		void addEdge(Edge e);
 		void removeEdge(Edge e);
 		boolean areConnected(Node n1, Node n2);
+		List<Node> connectedPath(Node from, Node to);
 }

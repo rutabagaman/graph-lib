@@ -59,25 +59,37 @@ public class GraphImpl implements Graph {
 	}
 
 	public boolean areConnected(Node n1, Node n2) {
-		Set<Node> visitedNodes = new HashSet<Node>();
+		return connectedPath(n1, n2) != null;
+	}
+	
+	public List<Node> connectedPath(Node from, Node to) {
+		HashMap<Node, Node> visitedNodeParentMap = new HashMap<Node, Node>();
 		LinkedList<Node> nodesToVisit = new LinkedList<Node>();
 		
-		nodesToVisit.push(n1);
+		nodesToVisit.push(from);
+		visitedNodeParentMap.put(from, null);
 		while (!nodesToVisit.isEmpty()) {
 			Node n = nodesToVisit.pop();
-			visitedNodes.add(n);
-			if (n == n2) {
-				return true;
+			if (n.equals(to)) {
+				// there is a path, unwind it from the visitedNodeParentMap
+				LinkedList<Node> resultPath = new LinkedList<Node>();
+				while (!n.equals(from)) {
+					resultPath.push(n);
+					n = visitedNodeParentMap.get(n);
+				}
+				resultPath.push(from);
+				return resultPath;
 			}
 			Collection<Edge> edgeList = getEdgesForNode(n);
 			for (Edge e: edgeList) {
 				Node otherNode = e.getFromNode().equals(n) ? e.getToNode() : e.getFromNode();
-				if (!visitedNodes.contains(otherNode)) {
+				if (!visitedNodeParentMap.containsKey(otherNode)) {
 					nodesToVisit.push(otherNode);
+					visitedNodeParentMap.put(otherNode, n);
 				}
 			}
 		}
-		return false;
+		return null;
 	}
 
 }
