@@ -73,11 +73,10 @@ public class GraphImpl implements Graph {
 			if (n.equals(to)) {
 				// there is a path, unwind it from the visitedNodeParentMap
 				LinkedList<Node> resultPath = new LinkedList<Node>();
-				while (!n.equals(from)) {
+				while (n != null) {
 					resultPath.push(n);
 					n = visitedNodeParentMap.get(n);
 				}
-				resultPath.push(from);
 				return resultPath;
 			}
 			Collection<Edge> edgeList = getEdgesForNode(n);
