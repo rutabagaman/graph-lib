@@ -40,6 +40,7 @@ public class EdgeImpl implements Edge {
 	}
 	@Override
 	public int hashCode() {
-		return this.toNode.hashCode() ^ this.fromNode.hashCode();
+		// we don't use ^ so the hashCode won't always be 0 if the edge points back to the same node
+		return this.toNode.hashCode() * this.fromNode.hashCode();
 	}
 }
