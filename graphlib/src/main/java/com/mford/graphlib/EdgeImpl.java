@@ -10,8 +10,8 @@ public class EdgeImpl implements Edge {
 			throw new IllegalArgumentException("Nodes must be non-null");
 		}
 		// we allow fromNode and toNode to be the same node
-		if (from.getName().compareTo(toNode.getName()) <= 0) {
-			// from node name is lexigraphically earlier or equal to to node name
+		if (from.getName().compareTo(to.getName()) <= 0) {
+			// from node name is lexicographically earlier or equal to to node name
 			this.fromNode = from;
 			this.toNode = to;
 		}
