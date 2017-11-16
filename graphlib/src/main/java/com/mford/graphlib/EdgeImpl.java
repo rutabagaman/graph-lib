@@ -4,7 +4,15 @@ public class EdgeImpl implements Edge {
 
 	private Node fromNode;
 	private Node toNode;
-	
+
+	/**
+	 * Create Edge with two Nodes.  The nodes must be non-null.  For this implementation
+	 * the nodes could be the same node(creating a loop).  If the edge is not directed,
+	 * the from node will be the one with the lexicographically earlier name.
+	 * 
+	 * @param from
+	 * @param to
+	 */
 	public EdgeImpl(Node from, Node to) {
 		if ((from == null) || (to == null)) {
 			throw new IllegalArgumentException("Nodes must be non-null");

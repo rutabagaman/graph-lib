@@ -3,7 +3,7 @@ package com.mford.graphlib;
 import java.util.*;
 
 public interface Graph {
-		Node getNodeByName(String name); //(note—duplicate node names are disallowed)
+		Node getNodeByName(String name);
 		Collection<Edge> getEdgesForNode(Node n);
 		void addNode(Node n); 
 		Collection<Edge> removeNode(Node n);

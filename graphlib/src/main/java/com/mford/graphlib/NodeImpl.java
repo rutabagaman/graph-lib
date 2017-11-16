@@ -1,9 +1,18 @@
 package com.mford.graphlib;
-
+/**
+ * Implementation of Node interface.  This is currently little more than a String wrapper.
+ * @author mattfo
+ *
+ */
 public class NodeImpl implements Node {
 	
 	private String name;
-
+	/**
+	 * Creates a Node with the given name.  For this implementation, the name must have
+	 * non-whitespace characters.  Nodes with the same name are equal to each other.
+	 * 
+	 * @param nodeName
+	 */
 	public NodeImpl(String nodeName) {
 		if (nodeName == null || nodeName.trim().isEmpty()) {
 			throw new IllegalArgumentException("nodeName must have non-whitespace characters");

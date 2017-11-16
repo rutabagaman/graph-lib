@@ -1,5 +1,10 @@
 package com.mford.graphlib;
-
+/**
+ * Factory Class used to generate model implementations.
+ * 
+ * @author mattfo
+ *
+ */
 public class ModelFactory {
 
 	public static Node getNode(String nodeName) throws IllegalArgumentException {
