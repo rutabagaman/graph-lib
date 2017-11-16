@@ -17,8 +17,9 @@ public class GraphImplTest extends TestCase
 {
 	private GraphImpl graph;
 	Node nodeList[] = new Node[7];
-	
-    /**
+	Edge edgeList[] = new Edge[7];
+
+	/**
      * Create the test case
      *
      * @param testName name of the test case
@@ -43,27 +44,51 @@ public class GraphImplTest extends TestCase
     		graph.addNode(nodeList[i]);
     	}
     	// node "0" is not connected, create edges for the rest
-    	graph.addEdge(new EdgeImpl(nodeList[1], nodeList[2]));
-    	graph.addEdge(new EdgeImpl(nodeList[1], nodeList[5]));
-    	graph.addEdge(new EdgeImpl(nodeList[2], nodeList[3]));
-    	graph.addEdge(new EdgeImpl(nodeList[2], nodeList[5]));
-    	graph.addEdge(new EdgeImpl(nodeList[3], nodeList[4]));
-    	graph.addEdge(new EdgeImpl(nodeList[4], nodeList[5]));
-    	graph.addEdge(new EdgeImpl(nodeList[4], nodeList[6]));
+    	edgeList[0] = new EdgeImpl(nodeList[1], nodeList[2]);
+    	edgeList[1] = new EdgeImpl(nodeList[1], nodeList[5]);
+    	edgeList[2] = new EdgeImpl(nodeList[2], nodeList[3]);
+    	edgeList[3] = new EdgeImpl(nodeList[2], nodeList[5]);
+    	edgeList[4] = new EdgeImpl(nodeList[3], nodeList[4]);
+    	edgeList[5] = new EdgeImpl(nodeList[4], nodeList[5]);
+    	edgeList[6] = new EdgeImpl(nodeList[4], nodeList[6]);
+    	for(int i=0; i<=6; i++) {
+    		graph.addEdge(edgeList[i]);
+    	}
     }
-
+    
+    public void testAddDuplicateNode() {
+    	try {
+    		graph.addNode(nodeList[5]);
+    		fail("Should have thrown IllegalArgumentException");
+    	}
+    	catch (IllegalArgumentException iae) {
+    	}
+    }
+    public void testAddDuplicateEdge() {
+    	try {
+    		graph.addEdge(edgeList[5]);
+    		fail("Should have thrown IllegalArgumentException");
+    	}
+    	catch (IllegalArgumentException iae) {
+    	}
+    }
+    public void testAddEdgeWithNonExistentNodes() {
+    	try {
+    		graph.addEdge(new EdgeImpl(new NodeImpl("A"), new NodeImpl("B")));
+    		fail("Should have thrown IllegalArgumentException");
+    	}
+    	catch (IllegalArgumentException iae) {
+    	}
+    }
     public void testGraphAreConnected() {
     	assertTrue(graph.areConnected(nodeList[1], nodeList[6]));
     }
-    
     public void testGraphAreNotConnected() {
     	assertFalse(graph.areConnected(nodeList[0], nodeList[6]));
     }
-
     public void testGraphAreNotConnected2() {
     	assertFalse(graph.areConnected(nodeList[6], nodeList[0]));
     }
-    
     public void testGraphShortestPath() {
     	List<Node> result = graph.shortestPath(nodeList[1], nodeList[6]);
     	List<Node> expectedResult = Arrays.asList(nodeList[1], nodeList[5], nodeList[4], nodeList[6]);
@@ -74,6 +99,27 @@ public class GraphImplTest extends TestCase
     		String nodeName = String.valueOf(i);
     		assertEquals(nodeList[i], graph.getNodeByName(nodeName));
     	}
+    }
+    public void testGetEdgesForNodes() {
+    	Collection<Edge> result = graph.getEdgesForNode(nodeList[2]);
+    	assertTrue(result.size() == 3);
+    	assertTrue(result.contains(edgeList[0]));
+    	assertTrue(result.contains(edgeList[2]));
+    	assertTrue(result.contains(edgeList[3]));
+    }
+    public void testRemoveNode() {
+    	graph.removeNode(nodeList[5]);
+    	List<Node> result = graph.shortestPath(nodeList[1], nodeList[6]);
+    	List<Node> expectedResult = Arrays.asList(nodeList[1], nodeList[2], nodeList[3], nodeList[4], nodeList[6]);
+    	assertNotNull(result);
+    	assertEquals(expectedResult, result);
+    }
+    public void testRemoveEdge() {
+    	graph.removeEdge(edgeList[5]);
+    	List<Node> result = graph.shortestPath(nodeList[1], nodeList[6]);
+    	List<Node> expectedResult = Arrays.asList(nodeList[1], nodeList[2], nodeList[3], nodeList[4], nodeList[6]);
+    	assertNotNull(result);
+    	assertEquals(expectedResult, result);
     }
 }
 
