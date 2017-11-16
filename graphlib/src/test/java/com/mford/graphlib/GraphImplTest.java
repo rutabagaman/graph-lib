@@ -2,6 +2,7 @@ package com.mford.graphlib;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import org.junit.Before;
@@ -11,7 +12,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 /**
- * Unit test for graph implementation
+ * Unit test for graph, edge and node implementations
  */
 public class GraphImplTest extends TestCase
 {
@@ -100,6 +101,9 @@ public class GraphImplTest extends TestCase
     		assertEquals(nodeList[i], graph.getNodeByName(nodeName));
     	}
     }
+    public void testGetNodeByNameNotFound() {
+    	assertEquals(null, graph.getNodeByName("A"));
+    }
     public void testGetEdgesForNodes() {
     	Collection<Edge> result = graph.getEdgesForNode(nodeList[2]);
     	assertTrue(result.size() == 3);
@@ -107,12 +111,19 @@ public class GraphImplTest extends TestCase
     	assertTrue(result.contains(edgeList[2]));
     	assertTrue(result.contains(edgeList[3]));
     }
+    public void testGetEdgesForNodesNotFound() {
+    	Collection<Edge> result = graph.getEdgesForNode(nodeList[0]);
+    	assertTrue(result != null);
+    	assertTrue(result.isEmpty());
+    }
     public void testRemoveNode() {
-    	graph.removeNode(nodeList[5]);
+    	Collection<Edge> removedEdges = graph.removeNode(nodeList[5]);
     	List<Node> result = graph.shortestPath(nodeList[1], nodeList[6]);
     	List<Node> expectedResult = Arrays.asList(nodeList[1], nodeList[2], nodeList[3], nodeList[4], nodeList[6]);
     	assertNotNull(result);
     	assertEquals(expectedResult, result);
+    	Collection<Edge> expectedEdgesRemoved = new HashSet<Edge>(Arrays.asList(edgeList[1],edgeList[3],edgeList[5]));
+    	assertEquals(expectedEdgesRemoved, removedEdges);
     }
     public void testRemoveEdge() {
     	graph.removeEdge(edgeList[5]);

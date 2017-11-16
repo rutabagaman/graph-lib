@@ -46,9 +46,9 @@ public class EdgeImpl implements Edge {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder(32);
-		sb.append(toNode);
-		sb.append(" <-> ");
 		sb.append(fromNode);
+		sb.append(" <-> ");
+		sb.append(toNode);
 		return sb.toString();
 	}
 
