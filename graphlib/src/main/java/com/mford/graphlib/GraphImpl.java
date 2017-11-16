@@ -16,11 +16,16 @@ public class GraphImpl implements Graph {
 		return nameNodeMap.get(name);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Collection<Edge> getEdgesForNode(Node n) {
-		return Collections.unmodifiableCollection(nodeEdgeMap.get(n));
+		Set<Edge> result = nodeEdgeMap.get(n);
+		return result != null ? Collections.unmodifiableCollection(nodeEdgeMap.get(n)) : Collections.EMPTY_SET;
 	}
 
 	public void addNode(Node n) {
+		if (nameNodeMap.containsKey(n.getName())) {
+			throw new IllegalArgumentException("Can't add Node already in Graph");
+		}
 		nameNodeMap.put(n.getName(), n);
 	}
 
@@ -49,6 +54,18 @@ public class GraphImpl implements Graph {
 	}
 	
 	public void addEdge(Edge e) {
+		// verify edge is not in graph already
+		if (nodeEdgeMap.containsKey(e.getFromNode())) {
+			for (Edge edge: nodeEdgeMap.get(e.getFromNode())) {
+				if (edge.equals(e)) {
+					throw new IllegalArgumentException("Can't add Edge already in Graph");
+				}
+			}
+		}
+		// verify edge nodes _are_ in graph
+		if (!nameNodeMap.containsKey(e.getFromNode().getName()) || !nameNodeMap.containsKey(e.getToNode().getName())) {
+			throw new IllegalArgumentException("Can't add Edge with Nodes not in Graph");
+		}
 		addToNodeEdgeMap(e.getFromNode(), e);
 		addToNodeEdgeMap(e.getToNode(), e);
 	}
@@ -59,17 +76,17 @@ public class GraphImpl implements Graph {
 	}
 
 	public boolean areConnected(Node n1, Node n2) {
-		return connectedPath(n1, n2) != null;
+		return shortestPath(n1, n2) != null;
 	}
 	
-	public List<Node> connectedPath(Node from, Node to) {
+	public List<Node> shortestPath(Node from, Node to) {
 		HashMap<Node, Node> visitedNodeParentMap = new HashMap<Node, Node>();
 		LinkedList<Node> nodesToVisit = new LinkedList<Node>();
 		
-		nodesToVisit.push(from);
+		nodesToVisit.addLast(from);
 		visitedNodeParentMap.put(from, null);
 		while (!nodesToVisit.isEmpty()) {
-			Node n = nodesToVisit.pop();
+			Node n = nodesToVisit.removeFirst();
 			if (n.equals(to)) {
 				// there is a path, unwind it from the visitedNodeParentMap
 				LinkedList<Node> resultPath = new LinkedList<Node>();
@@ -83,7 +100,7 @@ public class GraphImpl implements Graph {
 			for (Edge e: edgeList) {
 				Node otherNode = e.getFromNode().equals(n) ? e.getToNode() : e.getFromNode();
 				if (!visitedNodeParentMap.containsKey(otherNode)) {
-					nodesToVisit.push(otherNode);
+					nodesToVisit.addLast(otherNode);
 					visitedNodeParentMap.put(otherNode, n);
 				}
 			}
