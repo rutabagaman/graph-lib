@@ -43,4 +43,13 @@ public class EdgeImpl implements Edge {
 		// we don't use ^ so the hashCode won't always be 0 if the edge points back to the same node
 		return this.toNode.hashCode() * this.fromNode.hashCode();
 	}
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder(32);
+		sb.append(toNode);
+		sb.append(" <-> ");
+		sb.append(fromNode);
+		return sb.toString();
+	}
+
 }

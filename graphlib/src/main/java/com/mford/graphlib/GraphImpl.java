@@ -71,8 +71,8 @@ public class GraphImpl implements Graph {
 	}
 
 	public void removeEdge(Edge e) {
-		nodeEdgeMap.remove(e.getFromNode()).remove(e);
-		nodeEdgeMap.remove(e.getToNode()).remove(e);
+		nodeEdgeMap.get(e.getFromNode()).remove(e);
+		nodeEdgeMap.get(e.getToNode()).remove(e);
 	}
 
 	public boolean areConnected(Node n1, Node n2) {
