@@ -64,7 +64,7 @@ public class ModelFactoryTest extends TestCase
     public void testEdgeWithNullNode() {
     	try {
     		NodeImpl n = new NodeImpl("Detroit");
-    		ModelFactory.getEdge(null, n);
+    		ModelFactory.getEdge(null, n, false);
     		fail("Should have thrown IllegalArgumentException");
     	}
     	catch (IllegalArgumentException iae) {
@@ -73,7 +73,7 @@ public class ModelFactoryTest extends TestCase
     public void testEdgeWithNullOtherNode() {
     	try {
     		NodeImpl n = new NodeImpl("Cleveland");
-    		ModelFactory.getEdge(n, null);
+    		ModelFactory.getEdge(n, null, false);
     		fail("Should have thrown IllegalArgumentException");
     	}
     	catch (IllegalArgumentException iae) {
@@ -81,7 +81,7 @@ public class ModelFactoryTest extends TestCase
     }
     public void testEdgeWithNullNodes() {
     	try {
-    		ModelFactory.getEdge(null, null);
+    		ModelFactory.getEdge(null, null, false);
     		fail("Should have thrown IllegalArgumentException");
     	}
     	catch (IllegalArgumentException iae) {
@@ -90,16 +90,34 @@ public class ModelFactoryTest extends TestCase
     public void testGetEdgeAndToString() {
 		NodeImpl n1 = new NodeImpl("Detroit");
 		NodeImpl n2 = new NodeImpl("Chicago");
-		Edge e = ModelFactory.getEdge(n1, n2);
+		Edge e = ModelFactory.getEdge(n1, n2, false);
 		assertEquals(n2, e.getFromNode()); // Chicago is alphabetically first
 		assertEquals(n1, e.getToNode());
+		assertEquals(false, e.isDirected());
 		assertEquals("Chicago <-> Detroit", e.toString());
+    }
+    public void testGetDirectedEdgeAndToString() {
+		NodeImpl n1 = new NodeImpl("Detroit");
+		NodeImpl n2 = new NodeImpl("Chicago");
+		Edge e = ModelFactory.getEdge(n1, n2, true);
+		assertEquals(n1, e.getFromNode());
+		assertEquals(n2, e.getToNode());
+		assertEquals(true, e.isDirected());
+		assertEquals("Detroit -> Chicago", e.toString());
     }
     public void testGetLoopEdge() {
 		NodeImpl n1 = new NodeImpl("Detroit");
-		Edge e = ModelFactory.getEdge(n1, n1);
+		Edge e = ModelFactory.getEdge(n1, n1, false);
 		assertEquals(n1, e.getFromNode());
 		assertEquals(n1, e.getToNode());
+		assertEquals(false, e.isDirected());
+    }
+    public void testGetLoopDirectedEdge() {
+		NodeImpl n1 = new NodeImpl("Detroit");
+		Edge e = ModelFactory.getEdge(n1, n1, true);
+		assertEquals(n1, e.getFromNode());
+		assertEquals(n1, e.getToNode());
+		assertEquals(true, e.isDirected());
     }
     public void testGetGraph() {
 		assertTrue(ModelFactory.getGraph() instanceof Graph);

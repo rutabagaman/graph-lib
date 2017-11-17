@@ -11,8 +11,8 @@ public class ModelFactory {
 		return new NodeImpl(nodeName);
 	}
 	
-	public static Edge getEdge(Node from, Node to) throws IllegalArgumentException {
-		return new EdgeImpl(from, to);
+	public static Edge getEdge(Node from, Node to, boolean isDirected) throws IllegalArgumentException {
+		return new EdgeImpl(from, to, isDirected);
 	}
 	
 	public static Graph getGraph() throws IllegalArgumentException {

@@ -8,7 +8,9 @@ import java.util.*;
  */
 public class GraphImpl implements Graph {
 	
+	// Map of node names to nodes
 	private Map<String, Node> nameNodeMap;
+	// Map of nodes to all edges that refer to that node
 	private Map<Node, Set<Edge>> nodeEdgeMap;
 
 	public GraphImpl() {
@@ -25,7 +27,7 @@ public class GraphImpl implements Graph {
 	
 	@SuppressWarnings("unchecked")
 	/**
-	 * Gets all of the edges in this graph that can be traversed from the given node. 
+	 * Gets all of the edges in this graph that refer to the given node. 
 	 */
 	public Collection<Edge> getEdgesForNode(Node n) {
 		Set<Edge> result = nodeEdgeMap.get(n);
@@ -125,6 +127,10 @@ public class GraphImpl implements Graph {
 			}
 			Collection<Edge> edgeList = getEdgesForNode(n);
 			for (Edge e: edgeList) {
+				if (e.isDirected() && e.getToNode().equals(n)) {
+					// this directed edge goes to the Node; skip it
+					continue;
+				}
 				Node otherNode = e.getFromNode().equals(n) ? e.getToNode() : e.getFromNode();
 				if (!visitedNodeParentMap.containsKey(otherNode)) {
 					nodesToVisit.addLast(otherNode);

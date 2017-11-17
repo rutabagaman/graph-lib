@@ -132,5 +132,17 @@ public class GraphImplTest extends TestCase
     	assertNotNull(result);
     	assertEquals(expectedResult, result);
     }
+    public void testGraphShortestPathWithDirectedEdge() {
+    	graph.addEdge(new EdgeImpl(nodeList[4], nodeList[1], true));
+    	List<Node> result = graph.shortestPath(nodeList[1], nodeList[6]);
+    	List<Node> expectedResult = Arrays.asList(nodeList[1], nodeList[5], nodeList[4], nodeList[6]);
+    	assertEquals(expectedResult, result);
+    }
+    public void testGraphShortestPathWithDirectedEdge2() {
+    	graph.addEdge(new EdgeImpl(nodeList[4], nodeList[1], true));
+    	List<Node> result = graph.shortestPath(nodeList[6], nodeList[1]);
+    	List<Node> expectedResult = Arrays.asList(nodeList[6], nodeList[4], nodeList[1]);
+    	assertEquals(expectedResult, result);
+    }
 }
 
