@@ -48,7 +48,10 @@ public class GraphImpl implements Graph {
 	 * refer to the argument Node.  These Edges are also removed from the graph.
 	 */
 	public Collection<Edge> removeNode(Node n) {
-		Set<Edge> edgesToRemove = nodeEdgeMap.get(n); 
+		if (nodeEdgeMap.get(n) == null) {
+			return Collections.emptySet();
+		}
+		Collection<Edge> edgesToRemove = getEdgesForNode(n);
 		for (Edge e: edgesToRemove) {
 			Node otherNode = e.getFromNode().equals(n) ? e.getToNode() : e.getFromNode();
 			nodeEdgeMap.get(otherNode).remove(e);

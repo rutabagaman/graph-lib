@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.junit.Before;
 
 import junit.framework.Test;
@@ -123,7 +124,17 @@ public class GraphImplTest extends TestCase
     	assertNotNull(result);
     	assertEquals(expectedResult, result);
     	Collection<Edge> expectedEdgesRemoved = new HashSet<Edge>(Arrays.asList(edgeList[1],edgeList[3],edgeList[5]));
-    	assertEquals(expectedEdgesRemoved, removedEdges);
+    	assertTrue(CollectionUtils.isEqualCollection(expectedEdgesRemoved, removedEdges));
+    }
+    public void testRemoveNodeDoesntExist() {
+    	Collection<Edge> result = graph.removeNode(new NodeImpl("C"));
+    	assertTrue(result != null);
+    	assertTrue(result.isEmpty());
+    }
+    public void testRemoveNodeNoEdges() {
+    	Collection<Edge> result = graph.removeNode(nodeList[0]);
+    	assertTrue(result != null);
+    	assertTrue(result.isEmpty());
     }
     public void testRemoveEdge() {
     	graph.removeEdge(edgeList[5]);
